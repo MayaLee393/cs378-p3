@@ -83,21 +83,16 @@ const menuItems = [
 function App() {
   return (
     <div>
-      <h1>Menu</h1>
+      <div className='title'>
+        <h1 className='name'>Japanese Menu</h1>
+        <h2 className='phrase1'>Fresh, Authentic Japanese Cuisine</h2>
+        <h2 className='phrase2'>Rated Best in the Area!</h2>
+      </div>
       <div className="menu">
-        <Container>
-        {menuItems.map((item, index) => {
-           console.log(`/images/${item.imageName}`); // Debugging
-           return(
-          <Row key={index}>
-            <Col> <img src={process.env.PUBLIC_URL+(`/images/${item.imageName}`)} alt={item.title}/></Col>
-            <Col><Container>
-              <Row>{item.title}</Row>
-              <Row>{item.description}</Row>
-              <Row><Col>{item.price}</Col><Col><button></button></Col></Row>
-              </Container></Col>
-          </Row>)
-          })}
+        <Container fluid='md'>
+        {menuItems.map((item) => (
+          <MenuItem title={item.title} description={item.description} price={item.price} imageName={item.imageName} id={item.id}/>
+          ))}
         </Container>
       </div>
       <div>
