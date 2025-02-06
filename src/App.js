@@ -1,8 +1,9 @@
 import './App.css';
 import MenuItem from './components/MenuItem';
+import MenuHeader from './components/MenuHeader';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // This imports bootstrap css styles. You can use bootstrap or your own classes by using the className attribute in your elements.
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 // Menu data. An array of objects where each object represents a menu item. Each menu item has an id, title, description, image name, and price.
 // You can use the image name to get the image from the images folder.
@@ -79,24 +80,31 @@ const menuItems = [
   }
 ];
 
+const menuTitle = {
+    id: 0,
+    title: 'Japanese House',
+    phrase1: 'Fresh, Authentic Japanese Cuisine',
+    phrase2: 'Rated Best in the Area!',
+    imageName: 'japanese-house.png',
+};
+
 
 function App() {
   return (
     <div>
+
       <div className='title'>
-        <h1 className='name'>Japanese Menu</h1>
-        <h2 className='phrase1'>Fresh, Authentic Japanese Cuisine</h2>
-        <h2 className='phrase2'>Rated Best in the Area!</h2>
+        <MenuHeader key={menuTitle.id} title={menuTitle.title} phrase1={menuTitle.phrase1} phrase2={menuTitle.phrase2} imageName={menuTitle.imageName} />
       </div>
+
       <div className="menu">
         <Container fluid='md'>
         {menuItems.map((item) => (
-          <MenuItem title={item.title} description={item.description} price={item.price} imageName={item.imageName} id={item.id}/>
+          <MenuItem key={item.id} title={item.title} description={item.description} price={item.price} imageName={item.imageName} />
           ))}
         </Container>
       </div>
-      <div>
-      </div>
+
     </div>
   );
 }
