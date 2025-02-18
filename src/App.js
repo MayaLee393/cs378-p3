@@ -1,6 +1,7 @@
 import './App.css';
 import MenuItem from './components/MenuItem';
 import MenuHeader from './components/MenuHeader';
+import React, { useState } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // This imports bootstrap css styles. You can use bootstrap or your own classes by using the className attribute in your elements.
 import { Container } from 'react-bootstrap';
@@ -90,6 +91,42 @@ const menuTitle = {
 
 
 function App() {
+  const [cart, setCart] = useState({});
+
+
+// Function to update the cart
+const updateCart = (id, count) => {
+  setCart((prevCart) => ({
+      ...prevCart,
+      [id]: count, // Update the count for the specific item
+  }));
+};
+
+const showCartSummary = () => {
+  let item_list = "";
+  Object.keys(cart).forEach((itemId) => {
+    const quantity = cart[itemId];
+    if (quantity > 0) {
+      const item = menuItems.find((item) => item.id === parseInt(itemId)); // Find the item by its ID
+      item_list+=`${quantity} ${item.title}, `; // Show an alert with the item title and quantity
+    }
+  });
+
+  if (item_list) {
+    alert(item_list.slice(0, -2)); // Show all items in a single alert
+  } else {
+    alert("Your cart is empty!"); // If no items in the cart, show a message
+  }
+
+};
+
+const clearAllCart = () => {
+  setCart({}); 
+};
+
+// Calculate the total price
+const total = menuItems.reduce((acc, item) => acc + (cart[item.id] || 0) * item.price, 0);
+
   return (
     <div>
 
@@ -100,10 +137,21 @@ function App() {
       <div className="menu">
         <Container fluid='md'>
         {menuItems.map((item) => (
-          <MenuItem key={item.id} title={item.title} description={item.description} price={item.price} imageName={item.imageName} />
-          ))}
+                <MenuItem
+                    key={item.id} 
+                    title={item.title} 
+                    description={item.description} 
+                    price={item.price} 
+                    imageName={item.imageName} 
+                    count={cart[item.id] || 0} // Get count from cart, default to 0
+                    onUpdateCount={(count) => updateCart(item.id, count)} // Pass down updater function
+                />
+            ))}
         </Container>
       </div>
+      <div>{total}</div>
+      <button onClick={showCartSummary}>Order </button>
+      <button onClick={clearAllCart}>Clear All</button>
 
     </div>
   );
