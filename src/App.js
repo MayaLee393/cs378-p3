@@ -2,6 +2,7 @@ import './App.css';
 import MenuItem from './components/MenuItem';
 import MenuHeader from './components/MenuHeader';
 import React, { useState } from 'react';
+import TotalBar from './components/TotalBar';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // This imports bootstrap css styles. You can use bootstrap or your own classes by using the className attribute in your elements.
 import { Container } from 'react-bootstrap';
@@ -107,17 +108,25 @@ const showCartSummary = () => {
   Object.keys(cart).forEach((itemId) => {
     const quantity = cart[itemId];
     if (quantity > 0) {
-      const item = menuItems.find((item) => item.id === parseInt(itemId)); // Find the item by its ID
-      item_list+=`${quantity} ${item.title}, `; // Show an alert with the item title and quantity
+      const item = menuItems.find((item) => item.id === parseInt(itemId)); 
+      item_list+=`${quantity} ${item.title}, `; 
     }
   });
 
   if (item_list) {
-    alert(item_list.slice(0, -2)); // Show all items in a single alert
+    alert("Order placed!\n"+item_list.slice(0, -2));
+      const phoneNumber = prompt("Phone Number:");
+      if (phoneNumber !== null) {
+        console.log("User entered:", phoneNumber);
+      }
+      const address = prompt("Address:");
+      if (address !== null) {
+        console.log("User entered:", address);
+      }
   } else {
-    alert("Your cart is empty!"); // If no items in the cart, show a message
+    alert("No items in cart!"); 
   }
-
+  clearAllCart()
 };
 
 const clearAllCart = () => {
@@ -125,7 +134,7 @@ const clearAllCart = () => {
 };
 
 // Calculate the total price
-const total = menuItems.reduce((acc, item) => acc + (cart[item.id] || 0) * item.price, 0);
+const total = menuItems.reduce((acc, item) => acc + (cart[item.id] || 0) * item.price, 0).toFixed(2);
 
   return (
     <div>
@@ -149,9 +158,7 @@ const total = menuItems.reduce((acc, item) => acc + (cart[item.id] || 0) * item.
             ))}
         </Container>
       </div>
-      <div>{total}</div>
-      <button onClick={showCartSummary}>Order </button>
-      <button onClick={clearAllCart}>Clear All</button>
+      <TotalBar total={total} showCartSummary={showCartSummary} clearAllCart={clearAllCart}/>
 
     </div>
   );
